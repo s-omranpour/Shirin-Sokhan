@@ -49,6 +49,7 @@ class PoetFormer(pl.LightningModule):
                  topk=100, 
                  top_p=0.9, 
                  n_beam=1, 
+                 no_repeat_ngram=4,
                  temperature=0.8):
         
         self.eval()
@@ -64,6 +65,7 @@ class PoetFormer(pl.LightningModule):
             top_p=top_p,
             num_beams=n_beam,
             temperature=temperature,
+            no_repeat_ngram_size=no_repeat_ngram,
             num_return_sequences=num_return_sequences
         )
         
