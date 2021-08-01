@@ -70,7 +70,7 @@ class PoetFormer(pl.LightningModule):
         outputs = []
         for i, output in enumerate(decoded_outputs):
             o = self.tokenizer.decode(output, skip_special_tokens=False)
-            o = o.replace("<s>", "").replace("</s>", "").replace('<|startoftext|>', ':\n')
+            o = o.replace("<s>", "").replace("</s>", "").replace('<|startoftext|>', ':\n').replace('<sep>', '\n')
             outputs += [o]
         return outputs
             
