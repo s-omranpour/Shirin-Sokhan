@@ -15,5 +15,9 @@ We used `pytorch lightning` as backbone. Visit [main notebook](main.ipynb) for m
 ## Demo
 We used `streamlit` to create an app for demo. run `streamlit run demo.py`
 
+## Generated Sample
+![screenshot](screenshot.jpeg "Sample")
+
+
 ## References
 [1] [https://github.com/hooshvare/parsgpt](https://github.com/hooshvare/parsgpt)
