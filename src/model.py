@@ -52,6 +52,7 @@ class PoetFormer(pl.LightningModule):
                  temperature=0.8):
         
         self.eval()
+        print(f'generating poem in "{poet}" style.')
         prompt = f"<s>{poet}<|startoftext|>" + prompt
         generated = torch.tensor(self.tokenizer.encode(prompt)).unsqueeze(0)
 
