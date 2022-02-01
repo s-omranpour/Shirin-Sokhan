@@ -1,19 +1,18 @@
 import torch
 import pytorch_lightning as pl
-from transformers import AutoModelForCausalLM, AutoTokenizer, AdamW
+from transformers import AutoModelForCausalLM, AutoTokenizer, AdamW, AutoConfig
 
 class PoetFormer(pl.LightningModule):
-    def __init__(self, tokenizer=None, config=None, pretrained=None):
+    def __init__(self, pretrained_name=None):
         super().__init__()
-        if pretrained is not None:
-            print('using pretrained model:', pretrained)
-            self.model = AutoModelForCausalLM.from_pretrained(pretrained)
-            self.tokenizer = AutoTokenizer.from_pretrained(pretrained)
-        else:
-            assert tokenizer is not None
-            print('building model from scratch!')
-            self.model = AutoModelForCausalLM.from_config(config)
-            self.tokenizer = tokenizer
+        self.pretrained_name = pretrained_name
+        conf = AutoConfig.from_pretrained(pretrained_name)
+        self.model = AutoModelForCausalLM.from_config(conf)
+        self.tokenizer = AutoTokenizer.from_pretrained(pretrained_name)
+        
+            
+    def load_pretrained(self):
+        self.model = AutoModelForCausalLM.from_pretrained(self.pretrained_name)
         
     def forward(self, inputs):
         res = self.model(**inputs, labels=inputs['input_ids'])
@@ -52,8 +51,7 @@ class PoetFormer(pl.LightningModule):
                  no_repeat_ngram=4,
                  temperature=0.8):
         
-        self.eval()
-        print(f'generating poem in "{poet}" style.')
+#         print(f'generating poem in "{poet}" style.')
         prompt = f"<s>{poet}<|startoftext|>" + prompt
         generated = torch.tensor(self.tokenizer.encode(prompt)).unsqueeze(0)
 

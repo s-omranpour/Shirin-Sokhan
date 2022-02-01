@@ -1,10 +1,13 @@
 import streamlit as st
 from src.model import PoetFormer
+from transformers import AutoTokenizer, AutoConfig
 
 
 @st.cache(allow_output_mutation=True)
 def load_model():
-    return PoetFormer.load_from_checkpoint('weights/GPT2-fa-ganjoor-conditional/last.ckpt', pretrained="HooshvareLab/gpt2-fa")
+    tokenizer = AutoTokenizer.from_pretrained("HooshvareLab/gpt2-fa")
+    config = AutoConfig.from_pretrained("HooshvareLab/gpt2-fa")
+    return PoetFormer.load_from_checkpoint('weights/GPT2-fa-ganjoor-conditional/last.ckpt', config=config, tokenizer=tokenizer)
 
 with st.spinner('Loading model...'):
     model = load_model()
