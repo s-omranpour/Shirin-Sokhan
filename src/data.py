@@ -8,11 +8,11 @@ def count_tokens(x):
 
 
 class PoemDataset(Dataset):
-    def __init__(self, tokenizer, json_path, max_len=256):
+    def __init__(self, tokenizer, json_path, window=256):
         self.tokenizer = tokenizer
+        self.window = window - 1
         self.samples = json.load(open(json_path))
-        self.max_len = max_len-1
-        self.lens = [count_tokens(samp) - max_len for samp in self.samples]
+        self.lens = [count_tokens(samp) - self.window for samp in self.samples]
         self.cum_lens = [0] + [sum(self.lens[:i+1]) for i in range(len(self.samples))]
         
     def __len__(self):
@@ -27,7 +27,7 @@ class PoemDataset(Dataset):
     def __getitem__(self, idx):
         ind, offset = self.parse_idx(idx)
         sample = self.samples[ind].replace('<sep>', '0').replace('<|startoftext|>', '1')
-        text = '<s>' + sample[offset:offset+self.max_len] + '</s>'
+        text = '<s>' + sample[offset:offset+self.window] + '</s>'
         return text.replace('0', '<sep>').replace('1', '<|startoftext|>')
     
     def collate(self, batch):
