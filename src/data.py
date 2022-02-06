@@ -31,7 +31,7 @@ class PoemDataset(Dataset):
         return text.replace('0', '<sep>').replace('1', '<|startoftext|>')
     
     def collate(self, batch):
-        return self.tokenizer.batch_encode_plus(batch, return_tensors='pt', padding=True)
+        return self.tokenizer.batch_encode_plus(batch, return_tensors='pt', add_special_tokens=False, padding=True, truncation=True, max_length=512)
 
     
 def get_dataloaders(dataset, max_len=256, batch_size=32, val_frac=0.1):
