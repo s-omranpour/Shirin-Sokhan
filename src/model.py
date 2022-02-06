@@ -34,7 +34,7 @@ class PoetFormer(pl.LightningModule):
         return outputs
 
     def configure_optimizers(self):
-        opt = AdamW(self.parameters(), lr=1e-4)
+        opt = AdamW(self.parameters(), lr=1e-5)
         sch = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=10, eta_min=1e-8)
         return [opt], [sch]
 
